@@ -21,6 +21,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.firestore();
 
+const rrfConfig = {
+  userProfile: "users",
+  useFirestoreForProfile: true,
+};
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
