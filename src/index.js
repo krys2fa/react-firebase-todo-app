@@ -8,6 +8,14 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+import { ReactReduxFirebaseProvider } from "react-redux-firebase";
+import { createFirestoreInstance } from "redux-firestore";
+import { rootReducer } from "./ducks/reducers";
+import App from "./App";
+import { BrowserRouter } from "react-router-dom";
+
 const firebaseConfig = {
   apiKey: "AIzaSyBjjRNuythwzAKcEFIXjdv5P_fJjpDX6XE",
   authDomain: "todo-app-866f1.firebaseapp.com",
@@ -26,11 +34,27 @@ const rrfConfig = {
   useFirestoreForProfile: true,
 };
 
+const rrfProps = {
+  firebase,
+  config: rrfConfig,
+  dispatch: store.dispatch,
+  createFirestoreInstance, //since we are using Firestore
+};
+
+const initialState = {};
+const store = createStore(rootReducer, initialState);
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <ReactReduxFirebaseProvider {...rrfProps}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ReactReduxFirebaseProvider>
+    </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change
